@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Alex's Cube Scrambler</title>
+	<style type="text/css">
+	html,body {
+		font-family:"Arial";
+	}
+
+	#result {
+		font-size:20px;
+		margin-top:20px;
+	}
+	</style>
+
+	<script type="text/javascript">
+	Array.prototype.choose = function() {
+		var index = Math.floor(Math.random() * this.length);
+		return this[index];
+	};
+
+	Array.prototype.last = function() {
+		return this[this.length - 1];
+	};
+
+	window.onload = function() {
+		var go = document.getElementById('go');
+		go.onclick = function() {
+			var length = parseInt( document.getElementById('scramble_length').value, 10 );
+			document.getElementById('result').innerHTML = scramble(length);
+		};
+	};
+
+	function scramble(length) {
+		// generate map of planes associated with each side
+		var planes = {x: ['L', 'R'], y: ['U', 'D'], z: ['F', 'B']};
+		var planeMap = {};
+		for (var plane in planes) {
+			var sides = planes[plane];
+			for (var i = 0; i < sides.length; i++) {
+				var side = sides[i];
+				planeMap[side] = plane;
+			}
+		}
+
+		var sides = ['F', 'B', 'R', 'L', 'U', 'D'];
+		var modifiers = ['2', '\'', ''];
+
+		// create buffer of moved sides
+		// once plane crossed, move on those sides is then permittalbe again
+
+		var weakBuffer = [], moves = [];
+		for (var i = 0; i < length; i++) {
+			var mod = modifiers.choose(), side;
+			if (weakBuffer.length == 0) {
+				side = sides.choose();
+			}
+			else if (weakBuffer.length == 1) {
+				var badSide = weakBuffer[0],
+				newSides = sides.slice(),
+				badIndex = newSides.indexOf(badSide);
+				newSides.splice(badIndex, 1);
+
+				side = newSides.choose();
+
+				if (planeMap[side] != planeMap[badSide]) {
+					weakBuffer = []; // planes have been crossed
+				}
+			}
+			else {
+				// double plane weakness
+				// neither side in weak buffer can be chosen
+
+				var newSides = sides.slice();
+				for (var a = 0; a < weakBuffer.length; a++) {
+					var badSide = weakBuffer[a],
+					badIndex = newSides.indexOf(badSide);
+					newSides.splice(badIndex, 1);
+				}
+
+				side = newSides.choose();
+
+				weakBuffer = [];
+			}
+			moves.push(side + mod);
+			weakBuffer.push(side);
+		}
+		return moves.join(' ');
+	}
+	</script>
+</head>
+<body>
+	<h1>Rubik's Scramble Generator</h1>
+	<input type="text" size="5" id="scramble_length" value="25">
+	<button id="go">Generate Scramble!</button>
+	<div id="result"></div>
+</body>

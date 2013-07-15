@@ -8,10 +8,10 @@ magic
 
 ## no, seriously...
 
- - There are six sides of the cube which we can rotate: `[F, B, L, R, U, D] => [front, back, left, right, up, down]`.
- - We can rotate them clockwise (considered a "standard" move i.e. clockwise front => `F`).
- - We can rotate them backwards ("inverted" or "prime" move i.e. anticlockwise front => `F'`)
- - We can rotate them 180 degrees (double turn or 180 turn, i.e. double tunr front => `F2`)
+ - There are six sides of the cube which we can rotate: `[F, B, L, R, U, D] => [front, back, left, right, up, down]`
+ - We can rotate them clockwise (considered a "standard" move i.e. front => `F`)
+ - We can rotate them backwards ("inverted" or "prime" move i.e. front prime => `F'`)
+ - We can rotate them 180 degrees (double turn or 180 turn, i.e. front 2 => `F2`)
 
 The planes of the cube are the x plane (with corresponding sides L and R), the y plane (with corresponding sides U and D), and the z plane (with corresponding sides F and B).
 
